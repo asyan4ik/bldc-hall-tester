@@ -8,90 +8,272 @@
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 #define OLED_RESET -1   //   QT-PY / XIAO
 Adafruit_SH1106G display = Adafruit_SH1106G(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+#define LOGO16_GLCD_HEIGHT 128
+#define LOGO16_GLCD_WIDTH  64
+static const uint8_t PROGMEM image_data_centr[400] = {
 
-#define NUMFLAKES 10
-#define XPOS 0
-#define YPOS 1
-#define DELTAY 2
-//button setup
-#define PIN 3				// кнопка подключена сюда (PIN --- КНОПКА --- GND)
+ // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙█████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙██∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙█∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙██∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙██∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙██████████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙█∙∙∙∙███∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙████∙∙∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙████████∙∙███∙∙∙∙∙∙∙∙∙∙∙∙∙████∙∙∙████████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙█████∙█████∙███∙∙∙∙∙∙∙∙∙∙████∙∙∙████████████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███∙∙∙███████████████████████∙∙∙∙███∙████∙███∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙███∙∙∙█████████████████████∙∙∙∙∙∙███∙∙██∙∙███∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙████∙∙∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙████∙∙∙∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙█████████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙██████████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙█████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x7c, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0xc0, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0xc0, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x80, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xe0, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xe0, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x70, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x70, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3c, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1c, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1e, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x0f, 0xfc, 0x00, 0x00, 0x77, 0x80, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x87, 0x00, 0x01, 0xe3, 0xc0, 0x00, 0x00, 
+    0x00, 0x00, 0x0f, 0xf3, 0x80, 0x03, 0xc7, 0xf8, 0x00, 0x00, 
+    0x00, 0x00, 0x1f, 0x7d, 0xc0, 0x0f, 0x1f, 0xfe, 0x00, 0x00, 
+    0x00, 0x00, 0x38, 0xff, 0xff, 0xfe, 0x1d, 0xee, 0x00, 0x00, 
+    0x00, 0x00, 0x38, 0xff, 0xff, 0xf8, 0x1c, 0xce, 0x00, 0x00, 
+    0x00, 0x00, 0x1e, 0x3c, 0x00, 0x00, 0x1e, 0x1e, 0x00, 0x00, 
+    0x00, 0x00, 0x0f, 0xf8, 0x00, 0x00, 0x0f, 0xfc, 0x00, 0x00, 
+    0x00, 0x00, 0x03, 0xe0, 0x00, 0x00, 0x01, 0xe0, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+#include <OneButton.h>
 
-#include "GyverButton.h"
-GButton butt1(PIN);
+int pic = 0;
+int maxPics_L1 = 3;
+int maxPics_L2 = 0;
 
-byte mode =0;
+int button_brd = 3;
 
-void setup() {
-  // initialize with the I2C addr 0x3C
-  display.begin(i2c_Address, true); // Address 0x3C default
-    // set text color
-  display.setTextColor(SH110X_WHITE);
-  // set text size
-  display.setTextSize(1,2);
-  // set text cursor position
-  display.setCursor(25,0);
-  // show text
-  display.println("Electrocentr");
-  display.setCursor(25,20);
-  display.println("Hall Tester");
-  display.setCursor(25,40);
-  display.setTextSize(1);
-  display.println("by Asyan4ik");
-  display.setCursor(45,50);
-  display.setTextSize(1);
-  display.println("v0.1");
-  delay(1000);
-  display.clearDisplay();
-  display.setCursor(35,25);
-  display.setTextSize(1);
-  display.println("Press button");
+OneButton button(button_brd,true);
 
+long lastmillis = 0;
+long maxtime = 600000;
 
-  //button settings
-    butt1.setDebounce(50);        // настройка антидребезга (по умолчанию 80 мс)
-  butt1.setTimeout(300);        // настройка таймаута на удержание (по умолчанию 500 мс)
-  butt1.setClickTimeout(600);   // настройка таймаута между кликами (по умолчанию 300 мс)
-  // HIGH_PULL - кнопка подключена к GND, пин подтянут к VCC (PIN --- КНОПКА --- GND)
-  // LOW_PULL  - кнопка подключена к VCC, пин подтянут к GND
-  butt1.setType(HIGH_PULL);
-  // NORM_OPEN - нормально-разомкнутая кнопка
-  // NORM_CLOSE - нормально-замкнутая кнопка
-  butt1.setDirection(NORM_OPEN);
+void setup()   {
+button.attachClick(click);
+button.attachDoubleClick(doubleclick);
+button.attachLongPressStop(longPressStop);
+button.attachLongPressStart(longPressStart);
 
-  //debug
-    Serial.begin(9600);
-
+display.begin(i2c_Address, true); // Address 0x3C default
+display.clearDisplay();
 }
 
 void loop() {
-      butt1.tick();  // обязательная функция отработки. Должна постоянно опрашиваться
-  if (butt1.isClick()){
-    Serial.println(mode);         // проверка на один клик
-    switch(mode){
-    case 0:
-    display.clearDisplay();
- display.setCursor(1,1);
- display.setTextSize(1,2);
-    display.println("1. Hall mode:");  
-    display.display();
-    break;
+  button.tick();
 
-    case 1: 
-    display.clearDisplay();
- display.setCursor(1,1);
- display.setTextSize(1,2);
-    display.println("2. Throttle mode:");  
-    display.display();
-    break;
+//JUMP TO DEFAULT IF NO CLICK IS DETECTED
+if (millis() >= (lastmillis + maxtime))
+{
+    pic = 0;
+}
+
+if (pic == 0)
+{
+     header();
+  display.drawBitmap(20, 11,image_data_centr, 80, 40, 1 );
+  //  display.setCursor(0,11);
+  //  display.print("https://electrocenter.by/");
+  // display.setTextSize(4);
+   display.setCursor( 26,51);
+   display.print ("press button");
+  refresh();
+}
+//LAYER 1////////////////////////////////////////////////////
+if (pic == 1)
+{
+  header();
+
+
+  display.setCursor(0,11);  display.print (">HALL TEST");
+  display.setCursor(0,20);  display.print (" THROTTLE");
+  display.setCursor(0,56);  display.print (" PROJECT INFO");
+  refresh();
+}
+
+if (pic == 2)
+{
+  header();
+  display.setCursor(0,11);  display.print (" HALL TEST");
+  display.setCursor(0,20);  display.print (">THROTTLE");
+  display.setCursor(0,56);  display.print (" PROJECT INFO");
+  refresh();
+}
+
+if (pic == 3)
+{
+  header();
+  display.setCursor(0,11);  display.print (" HALL TEST");
+  display.setCursor(0,20);  display.print (" THROTTLE");
+  display.setCursor(0,56);  display.print (">PROJECT INFO");
+  refresh();
+}
+
+
+//LAYER 2////////////////////////////////////////////////////
+if (pic == 11)
+{
+  header();
+    float temp = 0.0;
+  int analogvalue = analogRead(A0);
+  temp = (analogvalue * 5.0) / 1024.0; // формула для конвертирования значения напряжения
+
+  display.setCursor(42,11);  display.print ("HALL TEST");
+  display.setCursor(0,20);  display.print (" HALL 1:");
+  display.setCursor(90,20); display.print (temp);
+  display.setCursor(0,29);  display.print (" HALL 2:");
+  display.setCursor(90,29); display.print (temp);
+  display.setCursor(0,38);  display.print (" HALL 3:");
+  display.setCursor(90,38); display.print (temp);
+  refresh();
+}
+
+if (pic == 12)
+{
+  header();
+    float temp = 0.0;
+  int analogvalue = analogRead(A0);
+  temp = (analogvalue * 5.0) / 1024.0; // формула для конвертирования значения напряжения
+
+
+  display.setCursor(18,11);  display.print ("THROTTLE TEST");
+  display.setCursor(0,29);  display.print ("THROTTLE:");
+  display.setCursor(90,29); display.print (temp);
+
+  refresh();
+}
+
+
+if (pic == 13)
+{
+  header();
+  display.setCursor(0,11);  display.print ("PROJECT INFO");
+  display.setCursor(0,20);  display.print ("NAME:");
+  display.setCursor(50,20); display.print ("HALL TESTER");
+  display.setCursor(0,29);  display.print ("DATE:");
+  display.setCursor(50,29); display.print ("08.12.2022");
+  display.setCursor(0,38);  display.print ("BY:");
+  display.setCursor(50,38); display.print ("asyan4ik");
+  refresh();
+}
 
 }
-    mode++;
-    if(mode>1){
-      mode =0;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+void click(){
+  lastmillis = millis();
+  if(pic>=0 && pic<10)
+  {
+    if (pic >= maxPics_L1)
+    {
+      pic=1;
     }
-    
-  } 
-  if (butt1.isHolded()) Serial.println("Holded");       // проверка на удержание
+    else if(pic < maxPics_L1)
+    {
+      pic++;
+    }
+  }
 
+  if(pic>=10 && pic<100)
+  {
+    if (pic > 30)
+    {
+      pic=11;
+    }
+    else if (pic < 30)
+    {
+      pic=pic+10;
+    }
+  }
+}
 
+void doubleclick(){
+  lastmillis = millis();
+  if (pic == 11) pic=1;
+  if (pic == 12) pic=2;
+  if (pic == 13) pic=3;
+}
+
+void longPressStart(){
+  lastmillis = millis();
+  if (pic>0 & pic<10)
+  {
+    pic=pic+10;
+  }
+}
+
+void longPressStop(){
+    ;
+}
+
+void header()
+{
+  display.setTextSize(1);
+  display.setTextColor(SH110X_WHITE);
+  display.setCursor(30,0);  display.print("ELECTROCENTR");
+  display.drawLine (0,9,128,9, SH110X_WHITE);
+}
+
+void refresh()
+{
+  display.display();
+  delay(00);
+  display.clearDisplay();
 }
